@@ -8,7 +8,7 @@ import entidades.Data;
 import excecoes.hoteis.*;
 
 public class RepositorioHoteisMemoria implements IRepositorioHoteis {
-    private ArrayList<Hotel> hoteis = new ArrayList<Hotel>();
+    private static ArrayList<Hotel> hoteis = new ArrayList<Hotel>();
 
     public ArrayList<Hotel> listarHoteis() {
         return this.hoteis;

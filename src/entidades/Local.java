@@ -9,22 +9,12 @@ package entidades;
  * @author Wendell
  */
 public class Local {
-    private String pais;
     private String estado;
     private String cidade;
 
-    public Local(String pais, String estado, String cidade) {
-        this.pais = pais;
+    public Local(String estado, String cidade) {
         this.estado = estado;
         this.cidade = cidade;
-    }
-
-    public String getPais() {
-        return pais;
-    }
-
-    public void setPais(String pais) {
-        this.pais = pais;
     }
 
     public String getEstado() {

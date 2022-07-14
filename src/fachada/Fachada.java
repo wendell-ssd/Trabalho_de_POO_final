@@ -12,12 +12,18 @@ import repositorios.viagens.IRepositorioViagens;
 import repositorios.viajantes.IRepositorioViajantes;
 import excecoes.carros.*;
 import excecoes.hoteis.*;
+import excecoes.locais.LocalJaCadastradoException;
+import excecoes.locais.LocalNaoExisteException;
 import excecoes.viajante.*;
 import excecoes.viagem.*;
 import fabrica.carros.*;
 import fabrica.viajantes.*;
 import fabrica.hoteis.*;
+import fabrica.locais.FabricaLocais;
+import fabrica.locais.IFabricaLocais;
 import fabrica.viagens.*;
+import java.util.Collection;
+import repositorios.locais.IRepositorioLocais;
 /**
  *
  * @author Wendell
@@ -27,10 +33,12 @@ public class Fachada {
   private ControladorViajantes controladorViajantes;
   private ControladorHoteis controladorHoteis;
   private ControladorViagens controladorViagens;
+  private ControladorLocais controladorLocais;
   private IFabricaCarros fabricaCarros = null;
   private IFabricaViajantes fabricaViajantes = null;
   private IFabricaHoteis fabricaHoteis = null;
   private IFabricaViagens fabricaViagens = null;
+  private IFabricaLocais fabricaLocais = null;
   private static Fachada fachada = null;
 
   public static Fachada getInstance() {
@@ -56,6 +64,9 @@ public class Fachada {
     this.fabricaViagens = new FabricaViagensMemoria();
     IRepositorioViagens repositorioViagens = fabricaViagens.getRepositorioViagens();
     this.controladorViagens = new ControladorViagens(repositorioViagens);
+    this.fabricaLocais = new FabricaLocais();
+    IRepositorioLocais repositorioLocais = fabricaLocais.getRepositorioLocais();
+    this.controladorLocais = new ControladorLocais(repositorioLocais);
   }
 
   // viajante
@@ -242,5 +253,19 @@ public class Fachada {
 
   public String mostrarTodosAsViagens() {
     return controladorViagens.mostrarTodosAsViagens();
+  }
+  /**
+   * 
+   */
+  public void cadastrarLocal(Local local) throws LocalJaCadastradoException{
+      controladorLocais.inserir(local);
+  }
+  
+  public Local pesquisarLocal(String estado, String cidade) throws LocalNaoExisteException{
+      return controladorLocais.pesquisarLocal(estado, cidade);
+  }
+  
+  public Collection<Local> listarLocais(){
+      return controladorLocais.listarLocais();
   }
 }
