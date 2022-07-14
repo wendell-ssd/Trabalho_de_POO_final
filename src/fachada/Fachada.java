@@ -14,6 +14,8 @@ import excecoes.carros.*;
 import excecoes.hoteis.*;
 import excecoes.locais.LocalJaCadastradoException;
 import excecoes.locais.LocalNaoExisteException;
+import excecoes.passagens.PassagemInexistenteException;
+import excecoes.passagens.PassagemJaCadastradaException;
 import excecoes.viajante.*;
 import excecoes.viagem.*;
 import fabrica.carros.*;
@@ -21,9 +23,12 @@ import fabrica.viajantes.*;
 import fabrica.hoteis.*;
 import fabrica.locais.FabricaLocais;
 import fabrica.locais.IFabricaLocais;
+import fabrica.passagens.FabricaPassagens;
+import fabrica.passagens.IFabricaPassagens;
 import fabrica.viagens.*;
 import java.util.Collection;
 import repositorios.locais.IRepositorioLocais;
+import repositorios.passagens.IRepositorioPassagens;
 /**
  *
  * @author Wendell
@@ -34,11 +39,14 @@ public class Fachada {
   private ControladorHoteis controladorHoteis;
   private ControladorViagens controladorViagens;
   private ControladorLocais controladorLocais;
+  private ControladorPassagens controladorPassagens;
   private IFabricaCarros fabricaCarros = null;
   private IFabricaViajantes fabricaViajantes = null;
   private IFabricaHoteis fabricaHoteis = null;
   private IFabricaViagens fabricaViagens = null;
   private IFabricaLocais fabricaLocais = null;
+  private IFabricaLocais fabricaPFabricaLocais = null;
+  private IFabricaPassagens fabricaPassagens = null;
   private static Fachada fachada = null;
 
   public static Fachada getInstance() {
@@ -67,6 +75,9 @@ public class Fachada {
     this.fabricaLocais = new FabricaLocais();
     IRepositorioLocais repositorioLocais = fabricaLocais.getRepositorioLocais();
     this.controladorLocais = new ControladorLocais(repositorioLocais);
+    this.fabricaPassagens = new FabricaPassagens();
+    IRepositorioPassagens repositorioPassagens = fabricaPassagens.getRepositorioPassagens();
+    this.controladorPassagens = new ControladorPassagens(repositorioPassagens);
   }
 
   // viajante
@@ -274,5 +285,17 @@ public class Fachada {
   
   public Collection<Local> listarLocais(){
       return controladorLocais.listarLocais();
+  }
+  
+  public void cadastrarPassagem(Passagem passagem) throws PassagemJaCadastradaException{
+      controladorPassagens.inserir(passagem);
+  }
+  
+  public Collection<Passagem> listarPassagens(){
+      return controladorPassagens.listarPessoas();
+  }
+  
+  public Passagem pesquisarPassagem(int idPassagem) throws PassagemInexistenteException{
+      return controladorPassagens.pesquisarPassagem(idPassagem);
   }
 }

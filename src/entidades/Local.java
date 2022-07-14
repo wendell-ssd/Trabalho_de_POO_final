@@ -33,8 +33,8 @@ public class Local {
         this.cidade = cidade;
     }
 
-    public void addItem(String string) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public String toString() {
+        return this.getCidade()+" "+this.getEstado();
     }
     
     

@@ -42,7 +42,7 @@ public class Data {
     this.ano = ano;
   }
 
-  public String toString(Data data) {
-    return data.getDia() + "/" + data.getMes() + "" + data.getAno();
+  public String toString() {
+    return getDia() + "/" + getMes() + "/" + getAno();
   }
 }

@@ -40,11 +40,12 @@ public class RepositorioViagensMemoria implements IRepositorioViagens {
    */
   @Override
   public void cadastrarViagem(Viagem viagem) throws ViagemJaCadastradaException{
-      try {
-        if(consultarViagem(viagem) != null) throw new ViagemJaCadastradaException();
-      } catch (Exception e) {
+//      try {
+//        if(consultarViagem(viagem) != null) throw new ViagemJaCadastradaException();
+//      } catch (Exception e) {
+//        viagens.add(viagem);
+//      }
         viagens.add(viagem);
-      }
   }
 
   /**
@@ -89,17 +90,17 @@ public class RepositorioViagensMemoria implements IRepositorioViagens {
    * @return
    * @throws ViagemInexistenteException 
    */
-  public Viagem consultarViagem(Viagem viagem) throws ViagemInexistenteException {
-      Viagem viagemBuscada = null;
-        for (Viagem v : viagens) {
-          if (v == viagem) {
-              viagemBuscada = viagem;
-              break;
-          }
-        }
-        if(viagemBuscada == null) throw new ViagemInexistenteException();
-        return viagemBuscada;
-  }
+//  public Viagem consultarViagem(Viagem viagem) throws ViagemInexistenteException {
+//      Viagem viagemBuscada = null;
+//        for (Viagem v : viagens) {
+//          if (v == viagem) {
+//              viagemBuscada = viagem;
+//              break;
+//          }
+//        }
+//        if(viagemBuscada == null) throw new ViagemInexistenteException();
+//        return viagemBuscada;
+//  }
   /**
    * 
    * @param origem

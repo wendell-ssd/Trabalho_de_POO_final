@@ -31,7 +31,7 @@ public interface IRepositorioViagens {
 
   public Viagem consultarViagemPeloID(int id) throws ViagemInexistenteException;
   
-  public Viagem consultarViagem(Viagem viagem) throws ViagemInexistenteException;
+//  public Viagem consultarViagem(Viagem viagem) throws ViagemInexistenteException;
   
   public Viagem consultarViagem(Local origem, Local destino, Data partida, Data chegada) throws ViagemInexistenteException;
 

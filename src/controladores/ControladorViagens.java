@@ -38,7 +38,7 @@ public class ControladorViagens {
     }
   }
   public Viagem consultarViagem(Local origem, Local destino, Data partida, Data chegada) throws ViagemInexistenteException {
-      return repositorioViagens.consultarViagem(consultarViagem(origem, destino, partida, chegada));
+      return repositorioViagens.consultarViagem(origem, destino, partida, chegada);
   }
 
   public String mostrarTodosAsViagens() {

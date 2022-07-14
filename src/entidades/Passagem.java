@@ -13,6 +13,14 @@ public class Passagem {
         this.viagem = viagem;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     public static int getGeradorID() {
         return geradorID;
     }
