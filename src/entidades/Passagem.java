@@ -1,5 +1,10 @@
 package entidades;
 
+/**
+ *
+ * @author Wendell
+ */
+
 public class Passagem {
     private static int geradorID = 0;
     private int id;
@@ -20,7 +25,7 @@ public class Passagem {
     public void setId(int id) {
         this.id = id;
     }
-    
+
     public static int getGeradorID() {
         return geradorID;
     }
