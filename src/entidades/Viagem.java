@@ -33,166 +33,172 @@ package entidades;
  */
 public class Viagem {
 
-  private static int geradorDeID = 0;
-  private int id;
-  private String origem;
-  private String destino;
-  private Data dataPartida;
-  private Data dataChegada;
-  private String classe;
-  private int bagagens;
-  private int numeroVoo;
-  private String empresa;
-  private Quarto quarto = null;
-  private Carro carro = null;
+    private static int geradorDeID = 0;
+    private int id;
+    private Local origem;
+    private Local destino;
+    private Data dataPartida;
+    private Data dataChegada;
+    private String classe;
+    private int bagagens;
+    private int numeroVoo;
+    private String empresa;
+    private int vagas;
+  //  private Quarto quarto = null;
+  //  private Carro carro = null;
 
-  public Viagem(Viajante viajante, String origem, String destino, Data dataPartida,
-      Data dataChegada, String classe, int bagagens, int numeroVoo,
-      String empresa, Quarto quarto, Carro carro) {
-    geradorDeID++;
-    this.id = geradorDeID;
-    this.origem = origem;
-    this.destino = destino;
-    this.dataPartida = dataPartida;
-    this.dataChegada = dataChegada;
-    this.classe = classe;
-    this.bagagens = bagagens;
-    this.numeroVoo = numeroVoo;
-    this.empresa = empresa;
-    this.quarto = quarto;
-    this.carro = carro;
-  }
+    public Viagem(Local origem, Local destino, Data dataPartida,
+        Data dataChegada, String classe, int bagagens, int numeroVoo,
+        String empresa, int vagas) {
+      geradorDeID++;
+      this.id = geradorDeID;
+      this.origem = origem;
+      this.destino = destino;
+      this.dataPartida = dataPartida;
+      this.dataChegada = dataChegada;
+      this.classe = classe;
+      this.bagagens = bagagens;
+      this.numeroVoo = numeroVoo;
+      this.empresa = empresa;
+      this.vagas = vagas;
+    }
 
-  public Viagem(Viajante viajante, String origem, String destino,
-      Data dataPartida, Data dataChegada, String classe,
-      int bagagens, int numeroVoo, String empresa,
-      Carro carro) {
-    geradorDeID++;
-    this.id = geradorDeID;
-    this.origem = origem;
-    this.destino = destino;
-    this.dataPartida = dataPartida;
-    this.dataChegada = dataChegada;
-    this.classe = classe;
-    this.bagagens = bagagens;
-    this.numeroVoo = numeroVoo;
-    this.empresa = empresa;
-    this.carro = carro;
-  }
+  //  public Viagem(Viajante viajante, Local origem, Local destino,
+  //      Data dataPartida, Data dataChegada, String classe,
+  //      int bagagens, int numeroVoo, String empresa,
+  //      Carro carro) {
+  //    geradorDeID++;
+  //    this.id = geradorDeID;
+  //    this.origem = origem;
+  //    this.destino = destino;
+  //    this.dataPartida = dataPartida;
+  //    this.dataChegada = dataChegada;
+  //    this.classe = classe;
+  //    this.bagagens = bagagens;
+  //    this.numeroVoo = numeroVoo;
+  //    this.empresa = empresa;
+  //    this.carro = carro;
+  //  }
+  //
+  //  public Viagem(Viajante viajante, String origem, String destino,
+  //      Data dataPartida, Data dataChegada, String classe,
+  //      int bagagens, int numeroVoo, String empresa, Quarto quarto) {
+  //    geradorDeID++;
+  //    this.id = geradorDeID;
+  //    this.origem = origem;
+  //    this.destino = destino;
+  //    this.dataPartida = dataPartida;
+  //    this.dataChegada = dataChegada;
+  //    this.classe = classe;
+  //    this.bagagens = bagagens;
+  //    this.numeroVoo = numeroVoo;
+  //    this.empresa = empresa;
+  //    this.quarto = quarto;
+  //  }
+  //
+  //  public Viagem(Viajante viajante, String origem, String destino,
+  //      Data dataPartida, Data dataChegada, String classe,
+  //      int bagagens, int numeroVoo, String empresa) {
+  //    geradorDeID++;
+  //    this.id = geradorDeID;
+  //    this.origem = origem;
+  //    this.destino = destino;
+  //    this.dataPartida = dataPartida;
+  //    this.dataChegada = dataChegada;
+  //    this.classe = classe;
+  //    this.bagagens = bagagens;
+  //    this.numeroVoo = numeroVoo;
+  //    this.empresa = empresa;
+  //  }
 
-  public Viagem(Viajante viajante, String origem, String destino,
-      Data dataPartida, Data dataChegada, String classe,
-      int bagagens, int numeroVoo, String empresa, Quarto quarto) {
-    geradorDeID++;
-    this.id = geradorDeID;
-    this.origem = origem;
-    this.destino = destino;
-    this.dataPartida = dataPartida;
-    this.dataChegada = dataChegada;
-    this.classe = classe;
-    this.bagagens = bagagens;
-    this.numeroVoo = numeroVoo;
-    this.empresa = empresa;
-    this.quarto = quarto;
-  }
 
-  public Viagem(Viajante viajante, String origem, String destino,
-      Data dataPartida, Data dataChegada, String classe,
-      int bagagens, int numeroVoo, String empresa) {
-    geradorDeID++;
-    this.id = geradorDeID;
-    this.origem = origem;
-    this.destino = destino;
-    this.dataPartida = dataPartida;
-    this.dataChegada = dataChegada;
-    this.classe = classe;
-    this.bagagens = bagagens;
-    this.numeroVoo = numeroVoo;
-    this.empresa = empresa;
-  }
+    public int getID() {
+      return this.id;
+    }
 
-  public Quarto getQuarto() {
-    return this.quarto;
-  }
+    public Local getOrigem() {
+      return this.origem;
+    }
 
-  public int getID() {
-    return this.id;
-  }
+    public Local getDestino() {
+      return this.destino;
+    }
 
-  public String getOrigem() {
-    return this.origem;
-  }
+    public Data getDataPartida() {
+      return this.dataPartida;
+    }
 
-  public String getDestino() {
-    return this.destino;
-  }
+    public Data getDataChegada() {
+      return this.dataChegada;
+    }
 
-  public Data getDataPartida() {
-    return this.dataPartida;
-  }
+    public String getClasse() {
+      return this.classe;
+    }
 
-  public Data getDataChegada() {
-    return this.dataChegada;
-  }
+    public int getBagagens() {
+      return this.bagagens;
+    }
 
-  public String getClasse() {
-    return this.classe;
-  }
+    public int getNumeroVoo() {
+      return this.numeroVoo;
+    }
 
-  public int getBagagens() {
-    return this.bagagens;
-  }
+    public String getEmpresa() {
+      return this.empresa;
+    }
 
-  public int getNumeroVoo() {
-    return this.numeroVoo;
-  }
+  //  public Carro getCarro() {
+  //    return this.carro;
+  //  }
 
-  public String getEmpresa() {
-    return this.empresa;
-  }
+    public void setOrigem(Local origem) {
+      this.origem = origem;
+    }
 
-  public Carro getCarro() {
-    return this.carro;
-  }
+    public void setDestino(Local destino) {
+      this.destino = destino;
+    }
 
-  public void setOrigem(String origem) {
-    this.origem = origem;
-  }
+    public void setDataPartida(Data dataPartida) {
+      this.dataPartida = dataPartida;
+    }
 
-  public void setDestino(String destino) {
-    this.destino = destino;
-  }
+    public void setDataChegada(Data dataChegada) {
+      this.dataChegada = dataChegada;
+    }
 
-  public void setDataPartida(Data dataPartida) {
-    this.dataPartida = dataPartida;
-  }
+    public void setClasse(String classe) {
+      this.classe = classe;
+    }
 
-  public void setDataChegada(Data dataChegada) {
-    this.dataChegada = dataChegada;
-  }
+    public void setBagagens(int bagagens) {
+      this.bagagens = bagagens;
+    }
 
-  public void setClasse(String classe) {
-    this.classe = classe;
-  }
+    public void setNumeroVoo(int numeroVoo) {
+      this.numeroVoo = numeroVoo;
+    }
 
-  public void setBagagens(int bagagens) {
-    this.bagagens = bagagens;
-  }
+    public void setEmpresa(String empresa) {
+      this.empresa = empresa;
+    }
+  
+    public int getVagas() {
+        return vagas;
+    }
 
-  public void setNumeroVoo(int numeroVoo) {
-    this.numeroVoo = numeroVoo;
-  }
+    public void setVagas(int vagas) {
+        this.vagas = vagas;
+    }
+  
+//  public void setCarro(Carro carro) {
+//    this.carro = carro;
+//  }
+//
+//  public double calcularPreco() {
+//    double preco = 200 * bagagens + quarto.calcularPreco() + carro.calcularPreco();
+//    return preco;
+//  }
 
-  public void setEmpresa(String empresa) {
-    this.empresa = empresa;
-  }
-
-  public void setCarro(Carro carro) {
-    this.carro = carro;
-  }
-
-  public double calcularPreco() {
-    double preco = 200 * bagagens + quarto.calcularPreco() + carro.calcularPreco();
-    return preco;
-  }
 }

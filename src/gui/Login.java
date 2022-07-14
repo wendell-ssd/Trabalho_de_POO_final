@@ -37,7 +37,6 @@ public class Login extends javax.swing.JFrame {
                         setVisible(false);
                     }else{
                         if ((Fachada.getInstance().pesquisarViajante(cpf.getText())).getSenha().getSenha().equals(stringSenha)) {
-                            System.out.println("Entrou");
                             escolherViagem.setVisible(true);
                             setVisible(false);
                         }

@@ -3,6 +3,7 @@ package controladores;
 import entidades.Carro;
 import entidades.Data;
 import excecoes.carros.*;
+import java.util.Collection;
 import repositorios.carros.IRepositorioCarros;
 
 public class ControladorCarros {
@@ -53,7 +54,11 @@ public class ControladorCarros {
   public double calcularPreco(Carro carro) {
     return repositorioCarros.calcularPreco(carro);
   }
-
+  
+  public Collection<Carro> listarCarros(){
+    return repositorioCarros.listarCarros();
+  }
+  
   public String mostrarTodosCarros() {
     return repositorioCarros.mostrarTodosCarros();
   }

@@ -110,7 +110,11 @@ public class Fachada {
       throw new CarroInexistenteException();
     }
   }
-
+  
+  public Collection<Carro> listarCarros(){
+    return controladorCarros.listarCarros();
+  }
+  
   public Carro alugarCarro(String placa, Data dataRetirada, Data dataDevolucao, int diasAlugado)
       throws CarroJaAlugadoException, CarroInexistenteException {
     try {
@@ -231,7 +235,7 @@ public class Fachada {
     return controladorViagens.listaViagens();
   }
 
-  public void cadastrarViagem(Viagem viagem) {
+  public void cadastrarViagem(Viagem viagem) throws ViagemJaCadastradaException{
     controladorViagens.cadastrarViagem(viagem);
   }
 
@@ -250,7 +254,10 @@ public class Fachada {
       throw excecao;
     }
   }
-
+  
+  public Viagem consultarViagem(Local origem, Local destino, Data partida, Data chegada) throws ViagemInexistenteException{
+      return controladorViagens.consultarViagem(origem, destino, partida, chegada);
+  }
   public String mostrarTodosAsViagens() {
     return controladorViagens.mostrarTodosAsViagens();
   }

@@ -1,5 +1,7 @@
 package controladores;
 
+import entidades.Data;
+import entidades.Local;
 import repositorios.viagens.IRepositorioViagens;
 import entidades.Viagem;
 import java.util.ArrayList;
@@ -16,7 +18,7 @@ public class ControladorViagens {
     return repositorioViagens.listarViagens();
   }
 
-  public void cadastrarViagem(Viagem viagem) {
+  public void cadastrarViagem(Viagem viagem) throws ViagemJaCadastradaException {
     repositorioViagens.cadastrarViagem(viagem);
   }
 
@@ -34,6 +36,9 @@ public class ControladorViagens {
     } catch (ViagemInexistenteException excecao) {
       throw excecao;
     }
+  }
+  public Viagem consultarViagem(Local origem, Local destino, Data partida, Data chegada) throws ViagemInexistenteException {
+      return repositorioViagens.consultarViagem(consultarViagem(origem, destino, partida, chegada));
   }
 
   public String mostrarTodosAsViagens() {

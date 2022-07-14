@@ -4,6 +4,8 @@
  */
 package repositorios.viagens;
 
+import entidades.Data;
+import entidades.Local;
 import entidades.Viagem;
 import java.util.ArrayList;
 import excecoes.viagem.*;
@@ -23,11 +25,15 @@ import excecoes.viagem.*;
 public interface IRepositorioViagens {
   public ArrayList<Viagem> listarViagens();
 
-  public void cadastrarViagem(Viagem viagem);
+  public void cadastrarViagem(Viagem viagem) throws ViagemJaCadastradaException;
 
   public void removerViagem(Viagem viagem) throws ViagemInexistenteException;
 
   public Viagem consultarViagemPeloID(int id) throws ViagemInexistenteException;
+  
+  public Viagem consultarViagem(Viagem viagem) throws ViagemInexistenteException;
+  
+  public Viagem consultarViagem(Local origem, Local destino, Data partida, Data chegada) throws ViagemInexistenteException;
 
   public String mostrarTodosAsViagens();
 

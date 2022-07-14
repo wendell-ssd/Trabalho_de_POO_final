@@ -4,6 +4,8 @@
  */
 package repositorios.viagens;
 
+import entidades.Data;
+import entidades.Local;
 import java.util.ArrayList;
 import excecoes.viagem.*;
 import entidades.Viagem;
@@ -36,8 +38,13 @@ public class RepositorioViagensMemoria implements IRepositorioViagens {
    * 
    * @param viagem - a viagem que se quer cadastrar.
    */
-  public void cadastrarViagem(Viagem viagem) {
-    viagens.add(viagem);
+  @Override
+  public void cadastrarViagem(Viagem viagem) throws ViagemJaCadastradaException{
+      try {
+        if(consultarViagem(viagem) != null) throw new ViagemJaCadastradaException();
+      } catch (Exception e) {
+        viagens.add(viagem);
+      }
   }
 
   /**
@@ -66,12 +73,52 @@ public class RepositorioViagensMemoria implements IRepositorioViagens {
    *         consultada.
    */
   public Viagem consultarViagemPeloID(int id) throws ViagemInexistenteException {
-    for (Viagem viagem : viagens) {
-      if (viagem.getID() == id) {
-        return viagem;
-      }
-    }
-    throw new ViagemInexistenteException();
+      Viagem viagemBuscada = null;
+        for (Viagem viagem : viagens) {
+          if (viagem.getID() == id) {
+              viagemBuscada = viagem;
+              break;
+          }
+        }
+        if(viagemBuscada == null) throw new ViagemInexistenteException();
+        return viagemBuscada;
+  }
+  /**
+   * 
+   * @param viagem
+   * @return
+   * @throws ViagemInexistenteException 
+   */
+  public Viagem consultarViagem(Viagem viagem) throws ViagemInexistenteException {
+      Viagem viagemBuscada = null;
+        for (Viagem v : viagens) {
+          if (v == viagem) {
+              viagemBuscada = viagem;
+              break;
+          }
+        }
+        if(viagemBuscada == null) throw new ViagemInexistenteException();
+        return viagemBuscada;
+  }
+  /**
+   * 
+   * @param origem
+   * @param destino
+   * @param partida
+   * @param chegada
+   * @return
+   * @throws ViagemInexistenteException 
+   */
+  public Viagem consultarViagem(Local origem, Local destino, Data partida, Data chegada) throws ViagemInexistenteException {
+      Viagem viagemBuscada = null;
+        for (Viagem v : viagens) {
+          if (v.getOrigem().getEstado().equals(origem.getEstado()) && v.getDestino().getEstado().equals(destino.getEstado()) && v.getOrigem().getCidade().equals(origem.getCidade()) && v.getDestino().getCidade().equals(destino.getCidade()) && v.getDataPartida().getDia() == partida.getDia() && v.getDataPartida().getMes() == partida.getMes() && v.getDataPartida().getAno() == partida.getAno() && v.getDataChegada().getDia() == chegada.getDia() && v.getDataChegada().getMes() == chegada.getMes() && v.getDataChegada().getAno() == chegada.getAno()) {
+              viagemBuscada = v;
+              break;
+          }
+        }
+        if(viagemBuscada == null) throw new ViagemInexistenteException();
+        return viagemBuscada;
   }
 
   /**
@@ -104,7 +151,7 @@ public class RepositorioViagensMemoria implements IRepositorioViagens {
     string = string + "Data de chegada: " + viagem.getDataChegada() + "\n";
     string = string + "Empresa: " + viagem.getEmpresa() + "\n";
     string = string + "Bagagens: " + viagem.getBagagens() + "\n";
-    string = string + "Carro: " + viagem.getCarro() + "\n";
+//    string = string + "Carro: " + viagem.getCarro() + "\n";
     return string;
   }
 }

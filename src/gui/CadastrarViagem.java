@@ -4,10 +4,16 @@
  */
 package gui;
 
+import entidades.Data;
 import entidades.Local;
+import entidades.Viagem;
+import excecoes.viagem.ViagemJaCadastradaException;
 import fachada.Fachada;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -53,6 +59,26 @@ public class CadastrarViagem extends javax.swing.JFrame {
         for (Local local : Fachada.getInstance().listarLocais()) {
             chegada.addItem(local.getCidade()+"/"+local.getEstado());
         }
+        
+        buttonConfirmar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String[] texto ={(String) partida.getSelectedItem(), (String) chegada.getSelectedItem()};
+                String[] localPartida = texto[0].split("/");
+                String[] localChegada = texto[1].split("/");
+                if(texto[0].equals(texto[1])) mensagem("Você inseriu dois destinos iguais!", 0);
+                else{
+                    Viagem viagem = new Viagem(new Local(localPartida[1], localPartida[0]), new Local(localChegada[1], localChegada[0]), new Data(Integer.parseInt((String)diaPartida.getSelectedItem()),Integer.parseInt((String)mesPartida.getSelectedItem()),Integer.parseInt((String)anoPartida.getSelectedItem())), new Data(Integer.parseInt((String)diaPartida.getSelectedItem()),Integer.parseInt((String)mesPartida.getSelectedItem()),Integer.parseInt((String)anoPartida.getSelectedItem())), (String)classeViagem.getSelectedItem(), 0, 0, empresa.getText(), (Integer)vagas.getValue());
+                    try {
+                        Fachada.getInstance().cadastrarViagem(viagem);
+                        mensagem("Viagem cadastrada", 1);
+                    } catch (ViagemJaCadastradaException ex) {
+                        mensagem("Viagem já cadastrada", 2);
+                    }
+                }
+                
+            }
+        });
         buttonCancelar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -61,7 +87,32 @@ public class CadastrarViagem extends javax.swing.JFrame {
             }
         });
     }
-
+    private void mensagem(String mensagem, int tipo){
+        /*
+        Erro: ERROR_MESSAGE = 0
+        Informação: INFORMATION_MESSAGE = 1
+        Advertência: WARNING_MESSAGE = 2
+        Pergunta: QUESTION_MESSAGE = 3
+        Plana: PLAIN_MESSAGE = 4
+        */
+        switch(tipo){
+            case 0 :
+                JOptionPane.showMessageDialog(this, mensagem, "Mensagem", JOptionPane.ERROR_MESSAGE);
+            break;
+            case 1 :
+                JOptionPane.showMessageDialog(this, mensagem, "Mensagem", JOptionPane.INFORMATION_MESSAGE);
+            break;
+            case 2 :
+                JOptionPane.showMessageDialog(this, mensagem, "Mensagem", JOptionPane.WARNING_MESSAGE);
+            break;
+            case 3 :
+                JOptionPane.showMessageDialog(this, mensagem, "Mensagem", JOptionPane.QUESTION_MESSAGE);
+            break;
+            case 4 :
+                JOptionPane.showMessageDialog(this, mensagem, "Mensagem", JOptionPane.PLAIN_MESSAGE);
+            break;
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -81,6 +132,10 @@ public class CadastrarViagem extends javax.swing.JFrame {
         chegada = new javax.swing.JComboBox<>();
         jLabel16 = new javax.swing.JLabel();
         vagas = new javax.swing.JSpinner();
+        jLabel17 = new javax.swing.JLabel();
+        empresa = new javax.swing.JTextField();
+        classeViagem = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
         jTabbedPane3 = new javax.swing.JTabbedPane();
         jPanel4 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
@@ -95,7 +150,7 @@ public class CadastrarViagem extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         diaChegada = new javax.swing.JComboBox<>();
         jLabel13 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        buttonConfirmar = new javax.swing.JButton();
         buttonCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -120,12 +175,20 @@ public class CadastrarViagem extends javax.swing.JFrame {
         jLabel16.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel16.setText("Vagas");
 
+        jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel17.setText("Empresa");
+
+        classeViagem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Leito", "Executivo", "Convencional" }));
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel4.setText("Classe");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(37, 37, 37)
+                .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel15)
                     .addComponent(jLabel16))
@@ -133,17 +196,27 @@ public class CadastrarViagem extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(partida, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(chegada, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(vagas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(50, Short.MAX_VALUE))
+                        .addComponent(chegada, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(49, 49, 49))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(vagas, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel17)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(empresa, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(classeViagem, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(9, 9, 9)
+                .addGap(15, 15, 15)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel15)
                     .addComponent(partida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -152,8 +225,12 @@ public class CadastrarViagem extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel16)
-                    .addComponent(vagas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(24, Short.MAX_VALUE))
+                    .addComponent(vagas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel17)
+                    .addComponent(empresa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4)
+                    .addComponent(classeViagem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Viagem", jPanel2);
@@ -218,7 +295,7 @@ public class CadastrarViagem extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel10)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(anoPartida, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(anoPartida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel13)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -230,8 +307,8 @@ public class CadastrarViagem extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel11)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(anoChegada, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(110, 110, 110))
+                        .addComponent(anoChegada, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(99, 99, 99))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -257,8 +334,8 @@ public class CadastrarViagem extends javax.swing.JFrame {
 
         jTabbedPane3.addTab("Datas", jPanel4);
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton1.setText("Confirmar");
+        buttonConfirmar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        buttonConfirmar.setText("Confirmar");
 
         buttonCancelar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         buttonCancelar.setText("Cancelar");
@@ -281,7 +358,7 @@ public class CadastrarViagem extends javax.swing.JFrame {
                 .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(147, 147, 147)
-                .addComponent(jButton1)
+                .addComponent(buttonConfirmar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -297,7 +374,7 @@ public class CadastrarViagem extends javax.swing.JFrame {
                 .addComponent(jTabbedPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(buttonConfirmar)
                     .addComponent(buttonCancelar))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -363,10 +440,12 @@ public class CadastrarViagem extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> anoChegada;
     private javax.swing.JComboBox<String> anoPartida;
     private javax.swing.JButton buttonCancelar;
+    private javax.swing.JButton buttonConfirmar;
     private javax.swing.JComboBox<String> chegada;
+    private javax.swing.JComboBox<String> classeViagem;
     private javax.swing.JComboBox<String> diaChegada;
     private javax.swing.JComboBox<String> diaPartida;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JTextField empresa;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -374,6 +453,8 @@ public class CadastrarViagem extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;

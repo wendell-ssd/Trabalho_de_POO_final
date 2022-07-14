@@ -36,7 +36,7 @@ public class CadastrarUsuario extends javax.swing.JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    Viajante viajante = new Viajante(nome.getText(), new Data(dia.getSelectedIndex(),mes.getSelectedIndex(), ano.getSelectedIndex()), cpf.getText(), new Senha(senha.getText()));
+                    Viajante viajante = new Viajante(nome.getText(), new Data(Integer.parseInt((String)dia.getSelectedItem()),Integer.parseInt((String)mes.getSelectedItem()), Integer.parseInt((String)ano.getSelectedItem())), cpf.getText(), new Senha(senha.getText()));
                     try {
                         Fachada.getInstance().cadastrarViajante(viajante);
                         mensagem("O usuario foi cadastrado com sucesso!", 1);

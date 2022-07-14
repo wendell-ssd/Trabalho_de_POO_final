@@ -4,8 +4,18 @@
  */
 package gui;
 
+import entidades.Carro;
+import entidades.Data;
+import entidades.Hotel;
+import entidades.Local;
+import entidades.Passagem;
+import excecoes.viagem.ViagemInexistenteException;
+import fachada.Fachada;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -18,6 +28,68 @@ public class EscolherViagem extends javax.swing.JFrame {
      */
     public EscolherViagem() {
         initComponents();
+        origem.removeAllItems();
+        destino.removeAllItems();
+        diaPartida.removeAllItems();
+        mesPartida.removeAllItems();
+        anoPartida.removeAllItems();
+        for (int i = 0; i < 31; i++) {
+            diaPartida.insertItemAt(""+(i+1),i);
+        }
+        for (int i = 0; i < 12; i++) {
+            mesPartida.insertItemAt(""+(i+1),i);
+        }
+        for (int i = 0; i < 2; i++) {
+            anoPartida.insertItemAt(""+(i+2022),i);
+        }
+        diaChegada.removeAllItems();
+        mesChegada.removeAllItems();
+        anoChegada.removeAllItems();
+        for (int i = 0; i < 31; i++) {
+            diaChegada.insertItemAt(""+(i+1),i);
+        }
+        for (int i = 0; i < 12; i++) {
+            mesChegada.insertItemAt(""+(i+1),i);
+        }
+        for (int i = 0; i < 2; i++) {
+            anoChegada.insertItemAt(""+(i+2022),i);
+        }
+        hoteis.removeAllItems();
+        carros.removeAllItems();
+        
+        for (Local local : Fachada.getInstance().listarLocais()) {
+            origem.addItem(local.getCidade()+"/"+local.getEstado());
+        }
+        
+        for (Local local : Fachada.getInstance().listarLocais()) {
+            destino.addItem(local.getCidade()+"/"+local.getEstado());
+        }
+        for (Hotel hotel : Fachada.getInstance().listarHoteis()) {
+            hoteis.addItem(hotel.getNome());
+        }
+        
+        for (Carro carro : Fachada.getInstance().listarCarros()) {
+            carros.addItem(carro.getModelo());
+        }
+        buttonConfirmar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String[] texto ={(String) origem.getSelectedItem(), (String) destino.getSelectedItem()};
+                String[] localOrigem = texto[0].split("/");
+                String[] localDestino = texto[1].split("/");
+                if(texto[0].equals(texto[1])) mensagem("Você inseriu dois destinos iguais!", 0);
+                else{
+                    Data dataPartida = new Data((Integer)diaPartida.getSelectedItem(),(Integer)mesPartida.getSelectedItem(),(Integer)anoPartida.getSelectedItem()); 
+                    Data dataChegada = new Data((Integer)diaChegada.getSelectedItem(),(Integer)mesChegada.getSelectedItem(),(Integer)anoChegada.getSelectedItem()); 
+                    try {
+                        Fachada.getInstance().consultarViagem(new Local(localOrigem[1],localOrigem[0]), new Local(localDestino[1], localDestino[0]), dataPartida, dataChegada);
+//                    Passagem passagem = new Passagem(new);
+                    } catch (ViagemInexistenteException ex) {
+                        mensagem("Infelizmente não possuimos viagens para essa configuração", 2);
+                    }
+                }
+            }
+        });
         buttonCancelar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -27,7 +99,32 @@ public class EscolherViagem extends javax.swing.JFrame {
             }
         });
     }
-
+    private void mensagem(String mensagem, int tipo){
+        /*
+        Erro: ERROR_MESSAGE = 0
+        Informação: INFORMATION_MESSAGE = 1
+        Advertência: WARNING_MESSAGE = 2
+        Pergunta: QUESTION_MESSAGE = 3
+        Plana: PLAIN_MESSAGE = 4
+        */
+        switch(tipo){
+            case 0 :
+                JOptionPane.showMessageDialog(this, mensagem, "Mensagem", JOptionPane.ERROR_MESSAGE);
+            break;
+            case 1 :
+                JOptionPane.showMessageDialog(this, mensagem, "Mensagem", JOptionPane.INFORMATION_MESSAGE);
+            break;
+            case 2 :
+                JOptionPane.showMessageDialog(this, mensagem, "Mensagem", JOptionPane.WARNING_MESSAGE);
+            break;
+            case 3 :
+                JOptionPane.showMessageDialog(this, mensagem, "Mensagem", JOptionPane.QUESTION_MESSAGE);
+            break;
+            case 4 :
+                JOptionPane.showMessageDialog(this, mensagem, "Mensagem", JOptionPane.PLAIN_MESSAGE);
+            break;
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -47,16 +144,16 @@ public class EscolherViagem extends javax.swing.JFrame {
         destino = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
         diaPartida = new javax.swing.JComboBox<>();
-        jComboBox4 = new javax.swing.JComboBox<>();
+        mesPartida = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jComboBox5 = new javax.swing.JComboBox<>();
+        anoPartida = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         diaChegada = new javax.swing.JComboBox<>();
         jLabel9 = new javax.swing.JLabel();
-        jComboBox7 = new javax.swing.JComboBox<>();
+        mesChegada = new javax.swing.JComboBox<>();
         jLabel10 = new javax.swing.JLabel();
-        jComboBox8 = new javax.swing.JComboBox<>();
+        anoChegada = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         classeViagem = new javax.swing.JComboBox<>();
         jLabel11 = new javax.swing.JLabel();
@@ -64,12 +161,12 @@ public class EscolherViagem extends javax.swing.JFrame {
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jPanel4 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
-        jComboBox11 = new javax.swing.JComboBox<>();
+        hoteis = new javax.swing.JComboBox<>();
         jTabbedPane3 = new javax.swing.JTabbedPane();
         jPanel5 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
-        jComboBox12 = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
+        carros = new javax.swing.JComboBox<>();
+        buttonConfirmar = new javax.swing.JButton();
         buttonCancelar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
@@ -96,10 +193,10 @@ public class EscolherViagem extends javax.swing.JFrame {
 
         diaPartida.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11" }));
 
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" }));
-        jComboBox4.addActionListener(new java.awt.event.ActionListener() {
+        mesPartida.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" }));
+        mesPartida.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox4ActionPerformed(evt);
+                mesPartidaActionPerformed(evt);
             }
         });
 
@@ -109,7 +206,7 @@ public class EscolherViagem extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel7.setText("/");
 
-        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2022", "2023" }));
+        anoPartida.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2022", "2023" }));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel6.setText("Chegada");
@@ -119,17 +216,17 @@ public class EscolherViagem extends javax.swing.JFrame {
         jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel9.setText("/");
 
-        jComboBox7.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" }));
-        jComboBox7.addActionListener(new java.awt.event.ActionListener() {
+        mesChegada.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" }));
+        mesChegada.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox7ActionPerformed(evt);
+                mesChegadaActionPerformed(evt);
             }
         });
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel10.setText("/");
 
-        jComboBox8.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2023" }));
+        anoChegada.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2023" }));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel4.setText("Classe");
@@ -159,11 +256,11 @@ public class EscolherViagem extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(mesPartida, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(anoPartida, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
@@ -187,11 +284,11 @@ public class EscolherViagem extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox7, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(mesChegada, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel10)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox8, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(anoChegada, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -204,9 +301,9 @@ public class EscolherViagem extends javax.swing.JFrame {
                     .addComponent(origem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5)
                     .addComponent(diaPartida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(mesPartida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7)
-                    .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(anoPartida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -214,9 +311,9 @@ public class EscolherViagem extends javax.swing.JFrame {
                     .addComponent(destino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6)
                     .addComponent(diaChegada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(mesChegada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10)
-                    .addComponent(jComboBox8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(anoChegada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -234,7 +331,7 @@ public class EscolherViagem extends javax.swing.JFrame {
         jLabel12.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel12.setText("Hoteis");
 
-        jComboBox11.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        hoteis.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -244,7 +341,7 @@ public class EscolherViagem extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel12)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(hoteis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(87, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -253,7 +350,7 @@ public class EscolherViagem extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
-                    .addComponent(jComboBox11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(hoteis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(63, Short.MAX_VALUE))
         );
 
@@ -264,7 +361,7 @@ public class EscolherViagem extends javax.swing.JFrame {
         jLabel13.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel13.setText("Carros");
 
-        jComboBox12.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        carros.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -274,7 +371,7 @@ public class EscolherViagem extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel13)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(carros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(87, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
@@ -283,14 +380,14 @@ public class EscolherViagem extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
-                    .addComponent(jComboBox12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(carros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(63, Short.MAX_VALUE))
         );
 
         jTabbedPane3.addTab("Carro", jPanel5);
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton1.setText("Confirmar");
+        buttonConfirmar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        buttonConfirmar.setText("Confirmar");
 
         buttonCancelar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         buttonCancelar.setText("Cancelar");
@@ -302,7 +399,7 @@ public class EscolherViagem extends javax.swing.JFrame {
             .addComponent(jTabbedPane1)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton1)
+                    .addComponent(buttonConfirmar)
                     .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -321,7 +418,7 @@ public class EscolherViagem extends javax.swing.JFrame {
                     .addComponent(jTabbedPane3))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(buttonConfirmar)
                     .addComponent(buttonCancelar))
                 .addContainerGap(10, Short.MAX_VALUE))
         );
@@ -367,13 +464,13 @@ public class EscolherViagem extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
+    private void mesPartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mesPartidaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox4ActionPerformed
+    }//GEN-LAST:event_mesPartidaActionPerformed
 
-    private void jComboBox7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox7ActionPerformed
+    private void mesChegadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mesChegadaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox7ActionPerformed
+    }//GEN-LAST:event_mesChegadaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -411,19 +508,17 @@ public class EscolherViagem extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> anoChegada;
+    private javax.swing.JComboBox<String> anoPartida;
     private javax.swing.JComboBox<String> bagagem;
     private javax.swing.JButton buttonCancelar;
+    private javax.swing.JButton buttonConfirmar;
+    private javax.swing.JComboBox<String> carros;
     private javax.swing.JComboBox<String> classeViagem;
     private javax.swing.JComboBox<String> destino;
     private javax.swing.JComboBox<String> diaChegada;
     private javax.swing.JComboBox<String> diaPartida;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox11;
-    private javax.swing.JComboBox<String> jComboBox12;
-    private javax.swing.JComboBox<String> jComboBox4;
-    private javax.swing.JComboBox<String> jComboBox5;
-    private javax.swing.JComboBox<String> jComboBox7;
-    private javax.swing.JComboBox<String> jComboBox8;
+    private javax.swing.JComboBox<String> hoteis;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -445,6 +540,8 @@ public class EscolherViagem extends javax.swing.JFrame {
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTabbedPane jTabbedPane3;
+    private javax.swing.JComboBox<String> mesChegada;
+    private javax.swing.JComboBox<String> mesPartida;
     private javax.swing.JComboBox<String> origem;
     // End of variables declaration//GEN-END:variables
 }
