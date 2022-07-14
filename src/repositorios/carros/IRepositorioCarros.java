@@ -5,6 +5,17 @@ import entidades.Data;
 import excecoes.carros.*;
 import java.util.ArrayList;
 
+/**
+ * Essa Classe é uma interface que contém os métodos de carros, essa interface
+ * deve ser implementada.
+ * Contém um atributo de Lista de carros.
+ * 
+ * @see RepositorioCarrosMemoria
+ * @see Carro
+ * @author Eliabe Bastos
+ * @since 2022-07-13
+ */
+
 public interface IRepositorioCarros {
   public ArrayList<Carro> listarCarros();
 

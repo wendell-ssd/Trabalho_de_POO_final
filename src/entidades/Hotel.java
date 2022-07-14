@@ -2,6 +2,18 @@ package entidades;
 
 import java.util.ArrayList;
 
+/**
+ * Classe que representa um Hotel.
+ * Contém 5 objetos do tipo:
+ * String que representam o nome do hotel, o cep e a cidade;
+ * Uma ListaEncadeada de objetos do tipo Quarto, que representam os quartos
+ * presentes no hotel;
+ * Um numérico (inteiro), que representa a quantidade de estrelas do hotel;
+ * todos os objetos tem seus gets e sets respectivamente associados.
+ * 
+ * @author Igor de Vasconcelos
+ */
+
 public class Hotel {
     private String nome;
     private String cep;
@@ -9,6 +21,16 @@ public class Hotel {
     private int estrelas;
     private Local local;
 
+    /**
+     * Construtor da classe hotel, todos os parâmetros precisam ser preenchidos.
+     * 
+     * @param nome     Nome do hotel;
+     * @param cep      CEP referente ao hotel;
+     * @param quartos  Lista encadeada que representa os quartos presentes em um
+     *                 hotel;
+     * @param estrelas Inteiro que representa a quantidade de estrelas do hotel;
+     * @param cidade   String que representa a cidade que o hotel está localizado.
+     */
     public Hotel(String nome, String cep, ArrayList<Quarto> quartos, int estrelas, Local local) {
         this.nome = nome;
         this.cep = cep;
@@ -54,6 +76,12 @@ public class Hotel {
         return diaria;
     }
 
+    /**
+     * Método que percorre a lista de quartos e nos diz a quantidade de quartos não
+     * reservados.
+     * 
+     * @return um inteiro que representa a quantidade de quartos não reservados.
+     */
     public int getQuartosDisponiveis() {
         int quantidade = 0;
         for (Quarto quarto : this.quartos) {
@@ -64,6 +92,13 @@ public class Hotel {
         return quantidade;
     }
 
+    /**
+     * Altera o método toString para nos dar nome, quantidade de estrelas, cep e
+     * quantidade de quartos disponíveis em um hotel.
+     * 
+     * @return String que representam as características mais importantes de um
+     *         hotel.
+     */
     public String toString() {
         String string = "";
         string = string + "Nome: " + this.nome + "\n" +

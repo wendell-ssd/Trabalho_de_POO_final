@@ -7,10 +7,19 @@ package repositorios.viagens;
 import entidades.Viagem;
 import java.util.ArrayList;
 import excecoes.viagem.*;
+
 /**
- *
- * @author Eliabe
+ * Essa Classe é uma interface que contém os métodos de Viagem, essa interface
+ * deve ser implementada.
+ * Contém um atributo de lista de viagens.
+ * 
+ * @see RepositorioHoteisMemoria
+ * @see Viagem
+ * @author Weatherly Moura.
+ * @since 2022-07-13
+ * 
  */
+
 public interface IRepositorioViagens {
   public ArrayList<Viagem> listarViagens();
 
@@ -21,5 +30,5 @@ public interface IRepositorioViagens {
   public Viagem consultarViagemPeloID(int id) throws ViagemInexistenteException;
 
   public String mostrarTodosAsViagens();
-    
+
 }

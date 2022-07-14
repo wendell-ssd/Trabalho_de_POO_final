@@ -7,6 +7,18 @@ import entidades.Data;
 import entidades.Viajante;
 import excecoes.hoteis.*;
 
+/**
+ * Essa Classe é uma interface que contém os métodos de Hotéis, essa interface
+ * deve ser implementada.
+ * Contém um atributo de Lista de Hoteis.
+ * 
+ * @see RepositorioHoteisMemoria
+ * @see Hotel
+ * @author Igor Vasconcelos
+ * @since 2022-07-13
+ * 
+ */
+
 public interface IRepositorioHoteis {
         public ArrayList<Hotel> listarHoteis();
 

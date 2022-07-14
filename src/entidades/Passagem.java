@@ -6,8 +6,8 @@ public class Passagem {
     private Viajante viajante;
     private Viagem viagem;
 
-    public Passagem(Viajante viajante, Viagem viagem){
-        this.geradorID++;
+    public Passagem(Viajante viajante, Viagem viagem) {
+        geradorID++;
         this.id = geradorID;
         this.viajante = viajante;
         this.viagem = viagem;
